@@ -1,54 +1,25 @@
-# React + TypeScript + Vite
+<h1 align="left">🔍 Algorithm Visualizer</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="left">A visual playground for sorting algorithms that brings computer science to life. Watch algorithms work their magic in real-time with interactive controls and beautiful animations.</p>
 
-Currently, two official plugins are available:
+<h2 align="left">✨ What it does</h2>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="left"><strong>Interactive Visualization:</strong> Watch sorting algorithms come to life with smooth animations<br><strong>Playback Controls:</strong> Play, pause, and step through each stage of the algorithm<br><strong>Customizable Parameters:</strong> Adjust speed and array size to see how algorithms behave differently<br><strong>Performance Metrics:</strong> Compare algorithm efficiency with real-time counters for operations</p>
 
-## Expanding the ESLint configuration
+<h2 align="left">🛠️ Built with</h2>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+<p align="left">React + TypeScript<br>Vite for lightning-fast development<br>Tailwind CSS for sleek, responsive design<br>Framer Motion for smooth animations<br>Zustand for simple state management</p>
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+<div align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" height="40" alt="typescript logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" height="40" alt="react logo"  />
+  <img width="12" />
+  <img src="https://cdn.simpleicons.org/tailwindcss/06B6D4" height="40" alt="tailwindcss logo"  />
+  <img width="12" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpHj4UwTW4ANSlNjzQOiiOqfDa6kal9RpF0A&s" height="40" alt="zustand logo" />
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+<img width="12" />
+  <img src="https://www.tpisoftware.com/tpu/File/html/202009/20200929151429/images/20200926171128.png" height="40" alt="framer motion logo" />
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+</div>
