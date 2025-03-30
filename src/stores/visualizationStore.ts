@@ -18,7 +18,7 @@ interface VisualizationStore {
 
 export const useVisualizationStore = create<VisualizationStore>((set) => ({
 	arraySize: 10,
-	array: [],
+	array: [3, 4, 1, 2, 3, 6, 4, 3, 2, 4],
 	currentAlgorithm: "Bubble Sort",
 	animationSpeed: 100,
 	isRunning: false,

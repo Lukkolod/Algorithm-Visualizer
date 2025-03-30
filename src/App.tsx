@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import SideBarControls from "./components/SideBarControls";
+import SortingVisualizer from "./components/SortingAlgorithms/SortingVisualizer";
 
 const App = () => {
 	return (
@@ -12,6 +13,7 @@ const App = () => {
             <SideBar>
                 <SideBarControls/>
             </SideBar>
+            <SortingVisualizer/>
 		</div>
 	);
 };
