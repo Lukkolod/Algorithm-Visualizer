@@ -1,3 +1,4 @@
+import { useSideBarStore } from "../stores/sideBarStore";
 import { useVisualizationStore } from "../stores/visualizationStore";
 
 const SideBarControls = () => {
@@ -9,6 +10,8 @@ const SideBarControls = () => {
 		animationSpeed,
 		setAnimationSpeed,
 	} = useVisualizationStore();
+
+	const { toggleOpen, isOpen } = useSideBarStore();
 	return (
 		<div className="flex items-center m-4 tracking-tight justify-center flex-col gap-4">
 			<h1>SORTING METHOD</h1>
@@ -113,6 +116,13 @@ const SideBarControls = () => {
 				>
 					<span>Ultra fast</span>
 				</div>
+			</div>
+			<div
+				className="mt-4 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer 
+          hover:bg-[rgb(6,95,70)] hover:text-white text-center"
+				onClick={toggleOpen}
+			>
+				Close Settings
 			</div>
 		</div>
 	);

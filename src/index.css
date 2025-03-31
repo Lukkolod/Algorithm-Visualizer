@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
-.App {
-	@apply bg-[rgb(13,13,13)] h-screen w-screen text-[rgb(185,185,185)] leading-6;
-	font-family: "Roboto Mono", "Roboto Mono", "Vazirmatn", monospace;
+html,
+body,
+#root {
+    @apply h-full w-full overflow-hidden;
 }
 
+.App {
+    @apply bg-[rgb(13,13,13)] text-[rgb(185,185,185)] leading-6;
+    font-family: "Roboto Mono", "Roboto Mono", "Vazirmatn", monospace;
+}
 
