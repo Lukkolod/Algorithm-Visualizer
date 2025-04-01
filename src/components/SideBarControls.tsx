@@ -26,7 +26,16 @@ const SideBarControls = () => {
 							e.target.checked && setCurrentAlgorithm("Bubble Sort")
 						}
 					/>
-					<div className="px-4 py-2 rounded-lg border border-gray-300 peer-checked:border-gray-300 peer-checked:text-white peer-checked:bg-[rgb(6,95,70)] flex justify-between items-center w-full select-none">
+					<div
+						className="px-4 py-2 rounded-lg 
+  border border-gray-700 
+  transition-all duration-200
+  peer-checked:border-emerald-600 peer-checked:text-white 
+  peer-checked:bg-gradient-to-r peer-checked:from-emerald-900 peer-checked:to-emerald-800 
+  peer-checked:shadow-md peer-checked:shadow-emerald-900/30
+  hover:bg-gray-800 
+  flex justify-between items-center w-full select-none"
+					>
 						<span>BubbleSort</span>
 					</div>
 				</label>
@@ -41,7 +50,16 @@ const SideBarControls = () => {
 							e.target.checked && setCurrentAlgorithm("Merge Sort")
 						}
 					/>
-					<div className="px-4 py-2 rounded-lg border border-gray-300 peer-checked:border-gray-300 peer-checked:text-white peer-checked:bg-[rgb(6,95,70)] flex justify-between items-center w-full select-none">
+					<div
+						className="px-4 py-2 rounded-lg 
+  border border-gray-700 
+  transition-all duration-200
+  peer-checked:border-emerald-600 peer-checked:text-white 
+  peer-checked:bg-gradient-to-r peer-checked:from-emerald-900 peer-checked:to-emerald-800 
+  peer-checked:shadow-md peer-checked:shadow-emerald-900/30
+  hover:bg-gray-800 
+  flex justify-between items-center w-full select-none"
+					>
 						<span>MergeSort</span>
 					</div>
 				</label>
@@ -56,7 +74,16 @@ const SideBarControls = () => {
 							e.target.checked && setCurrentAlgorithm("Quick Sort")
 						}
 					/>
-					<div className="px-4 py-2 rounded-lg border border-gray-300 peer-checked:border-gray-300 peer-checked:text-white peer-checked:bg-[rgb(6,95,70)] flex justify-between items-center w-full select-none">
+					<div
+						className="px-4 py-2 rounded-lg 
+  border border-gray-700 
+  transition-all duration-200
+  peer-checked:border-emerald-600 peer-checked:text-white 
+  peer-checked:bg-gradient-to-r peer-checked:from-emerald-900 peer-checked:to-emerald-800 
+  peer-checked:shadow-md peer-checked:shadow-emerald-900/30
+  hover:bg-gray-800 
+  flex justify-between items-center w-full select-none"
+					>
 						<span>QuickSort</span>
 					</div>
 				</label>
@@ -107,9 +134,9 @@ const SideBarControls = () => {
 			</div>
 			<div className="flex space-x-4">
 				<div
-					className={`px-4 py-2 rounded-lg border border-gray-300 ${
+					className={`mt-4 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-800${
 						animationSpeed === 10
-							? "border-gray-300 text-white bg-[rgb(6,95,70)] "
+							? "bg-[rgb(6,95,70)] text-white text-center "
 							: ""
 					} flex justify-between items-center w-full select-none`}
 					onClick={() => setAnimationSpeed(10)}

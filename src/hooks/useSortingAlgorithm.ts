@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { bubbleSort, BubbleSortEvent } from "../utils/bubbleSort";
+import { mergeSort, MergeSortEvent } from "../utils/mergeSort";
+import { quickSort, QuickSortEvent } from "../utils/quickSort";
 
 type SortingIndices = [number, number] | [];
+
+type SortingEvent = BubbleSortEvent | MergeSortEvent | QuickSortEvent;
 
 interface AnimationStateProps {
 	comparing: SortingIndices;
@@ -32,25 +36,39 @@ export const useSortingAlgorithm = (
 		stats: { comparisons: 0, swaps: 0 },
 	});
 
-	const [animationEvents, setAnimationEvents] = useState<BubbleSortEvent[]>([]);
+	const [animationEvents, setAnimationEvents] = useState<SortingEvent[]>([]);
 
 	useEffect(() => {
+		let events: SortingEvent[] = [];
+		let comparisons = 0;
+		let swaps = 0;
 		if (currentAlgorithm === "Bubble Sort") {
-			const { sortedArray, events, comparisons, swaps } =
-				bubbleSort(initialArray);
-
-			setAnimationEvents(events);
-
-			setAnimationState((prev) => ({
-				...prev,
-                sorted: -1,
-				totalSteps: events.length,
-				currentStep: 0,
-				isDone: false,
-				stats: { comparisons, swaps },
-			}));
-			setArray([...initialArray]);
+			const result = bubbleSort(initialArray);
+			events = result.events;
+			comparisons = result.comparisons;
+			swaps = result.swaps;
+		} else if (currentAlgorithm === "Merge Sort") {
+			const result = mergeSort(initialArray);
+			events = result.events;
+			comparisons = result.comparisons;
+			swaps = result.swaps;
+		} else if (currentAlgorithm === "Quick Sort") {
+			const result = quickSort(initialArray);
+			events = result.events;
+			comparisons = result.comparisons;
+			swaps = result.swaps;
 		}
+		setAnimationEvents(events);
+
+		setAnimationState((prev) => ({
+			...prev,
+			sorted: -1,
+			totalSteps: events.length,
+			currentStep: 0,
+			isDone: false,
+			stats: { comparisons, swaps },
+		}));
+		setArray([...initialArray]);
 	}, [initialArray, currentAlgorithm]);
 
 	const nextStep = () => {
@@ -105,7 +123,7 @@ export const useSortingAlgorithm = (
 		} else if (previousEvent.type === "compare") {
 			newAnimationState.comparing = [];
 		} else if (previousEvent.type === "sorted") {
-            newAnimationState.sorted = Math.max(0, animationState.sorted - 1);
+			newAnimationState.sorted = Math.max(0, animationState.sorted - 1);
 		}
 		setArray(newArray);
 		setAnimationState(newAnimationState);
@@ -145,16 +163,16 @@ export const useSortingAlgorithm = (
 
 	const reset = () => {
 		setArray([...initialArray]);
-        setAnimationState((prev) => ({
-            ...prev,
-            comparing: [],
-		 	swapping: [],
-		 	sorted: 0,
-		 	currentStep: 0,
-		 	isRunning: false,
-		 	isDone: false,
+		setAnimationState((prev) => ({
+			...prev,
+			comparing: [],
+			swapping: [],
+			sorted: 0,
+			currentStep: 0,
+			isRunning: false,
+			isDone: false,
 			stats: { comparisons: 0, swaps: 0 },
-        }))
+		}));
 	};
 
 	return {

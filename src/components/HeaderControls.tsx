@@ -5,13 +5,18 @@ const HeaderControls = () => {
 	const { toggleOpen, isOpen } = useSideBarStore();
 
 	return (
-		<div>
+		<div className="flex items-center h-full pr-6">
 			{!isOpen && (
 				<button
-					className="lowercase flex items-center m-6 tracking-tight"
+					className="flex items-center gap-2 px-4 py-2 
+                    bg-emerald-800 hover:bg-emerald-700 
+                    text-gray-200 rounded-md
+                    transition-colors duration-200 ease-in-out
+                    border border-emerald-700 shadow-sm"
 					onClick={toggleOpen}
 				>
-					Settings <IoOptionsSharp size={32} />
+					<span className="font-medium">Settings</span>
+					<IoOptionsSharp size={24} />
 				</button>
 			)}
 		</div>
