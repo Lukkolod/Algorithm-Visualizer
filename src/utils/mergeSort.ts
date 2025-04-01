@@ -1,7 +1,9 @@
 export type MergeSortEvent =
+	| { type: "divide"; indices: [number, number] }
 	| { type: "compare"; indices: [number, number] }
-	| { type: "overwrite"; index: number; value: number }
-	| { type: "markSorted"; indices: number[] };
+	| { type: "set"; index: number; value: number }
+	| { type: "merge"; leftStart: number; mid: number; rightEnd: number }
+	| { type: "sorted"; indices: number[] };
 
 export const mergeSort = (
 	array: number[]
@@ -12,94 +14,113 @@ export const mergeSort = (
 	swaps: number;
 } => {
 	const arr = [...array];
-	const n = arr.length;
 	const events: MergeSortEvent[] = [];
 	let comparisons = 0;
-	let swaps = 0; 
+	let swaps = 0;
 
-	const merge = (left: number, mid: number, right: number) => {
-		const leftArr = arr.slice(left, mid + 1);
-		const rightArr = arr.slice(mid + 1, right + 1);
+	// Temporary array for merging
+	const temp = new Array(arr.length);
 
-		let i = 0,
-			j = 0,
-			k = left;
+	function mergeSortHelper(start: number, end: number) {
+		// Base case
+		if (start >= end) return;
 
-		while (i < leftArr.length && j < rightArr.length) {
+		const mid = Math.floor((start + end) / 2);
+
+		// Record the division event
+		events.push({
+			type: "divide",
+			indices: [start, end],
+		});
+
+		// Recursively sort the left half
+		mergeSortHelper(start, mid);
+
+		// Recursively sort the right half
+		mergeSortHelper(mid + 1, end);
+
+		// Merge the sorted halves
+		events.push({
+			type: "merge",
+			leftStart: start,
+			mid: mid,
+			rightEnd: end,
+		});
+
+		merge(start, mid, end);
+	}
+
+	function merge(start: number, mid: number, end: number) {
+		let i = start;
+		let j = mid + 1;
+		let k = start;
+
+		// Copy elements to temp array
+		for (let l = start; l <= end; l++) {
+			temp[l] = arr[l];
+		}
+
+		// Merge the two halves
+		while (i <= mid && j <= end) {
 			events.push({
 				type: "compare",
-				indices: [left + i, mid + 1 + j],
+				indices: [i, j],
 			});
 			comparisons++;
 
-			if (leftArr[i] <= rightArr[j]) {
-				arr[k] = leftArr[i];
+			if (temp[i] <= temp[j]) {
 				events.push({
-					type: "overwrite",
+					type: "set",
 					index: k,
-					value: leftArr[i],
+					value: temp[i],
 				});
+				arr[k++] = temp[i++];
 				swaps++;
-				i++;
 			} else {
-				arr[k] = rightArr[j];
 				events.push({
-					type: "overwrite",
+					type: "set",
 					index: k,
-					value: rightArr[j],
+					value: temp[j],
 				});
+				arr[k++] = temp[j++];
 				swaps++;
-				j++;
 			}
-			k++;
 		}
 
-		while (i < leftArr.length) {
-			arr[k] = leftArr[i];
+		// Copy remaining elements from left half
+		while (i <= mid) {
 			events.push({
-				type: "overwrite",
+				type: "set",
 				index: k,
-				value: leftArr[i],
+				value: temp[i],
 			});
+			arr[k++] = temp[i++];
 			swaps++;
-			i++;
-			k++;
 		}
 
-		while (j < rightArr.length) {
-			arr[k] = rightArr[j];
+		// Copy remaining elements from right half
+		while (j <= end) {
 			events.push({
-				type: "overwrite",
+				type: "set",
 				index: k,
-				value: rightArr[j],
+				value: temp[j],
 			});
+			arr[k++] = temp[j++];
 			swaps++;
-			j++;
-			k++;
 		}
 
-		const sortedIndices = Array.from(
-			{ length: right - left + 1 },
-			(_, idx) => left + idx
-		);
+		// Mark the sorted subarray
+		const sortedIndices = [];
+		for (let l = start; l <= end; l++) {
+			sortedIndices.push(l);
+		}
 		events.push({
-			type: "markSorted",
+			type: "sorted",
 			indices: sortedIndices,
 		});
-	};
+	}
 
-	const mergeSortHelper = (left: number, right: number) => {
-		if (left < right) {
-			const mid = Math.floor((left + right) / 2);
-
-			mergeSortHelper(left, mid);
-			mergeSortHelper(mid + 1, right);
-
-			merge(left, mid, right);
-		}
-	};
-
-	mergeSortHelper(0, n - 1);
+	mergeSortHelper(0, arr.length - 1);
 
 	return {
 		sortedArray: arr,

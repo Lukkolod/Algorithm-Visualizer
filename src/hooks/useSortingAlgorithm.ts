@@ -3,14 +3,17 @@ import { bubbleSort, BubbleSortEvent } from "../utils/bubbleSort";
 import { mergeSort, MergeSortEvent } from "../utils/mergeSort";
 import { quickSort, QuickSortEvent } from "../utils/quickSort";
 
-type SortingIndices = [number, number] | [];
-
-type SortingEvent = BubbleSortEvent | MergeSortEvent | QuickSortEvent;
+type SortingIndices = number[];
 
 interface AnimationStateProps {
 	comparing: SortingIndices;
 	swapping: SortingIndices;
-	sorted: number;
+	setting: { index: number; value: number } | null;
+	dividing: SortingIndices;
+	merging: { leftStart: number; mid: number; rightEnd: number } | null;
+	partitioning: { start: number; end: number; pivotIndex: number } | null;
+	pivotIndex: number | null;
+	sorted: SortingIndices;
 	currentStep: number;
 	totalSteps: number;
 	isRunning: boolean;
@@ -18,17 +21,25 @@ interface AnimationStateProps {
 	stats: { comparisons: number; swaps: number };
 }
 
+type SortingEvent = BubbleSortEvent | MergeSortEvent | QuickSortEvent;
+
 export const useSortingAlgorithm = (
 	initialArray: number[],
 	animationSpeed: number,
 	currentAlgorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort"
 ) => {
 	const [array, setArray] = useState([...initialArray]);
+	const [originalArray] = useState([...initialArray]);
 
 	const [animationState, setAnimationState] = useState<AnimationStateProps>({
 		comparing: [],
 		swapping: [],
-		sorted: 0,
+		setting: null,
+		dividing: [],
+		merging: null,
+		partitioning: null,
+		pivotIndex: null,
+		sorted: [],
 		currentStep: 0,
 		totalSteps: 0,
 		isRunning: false,
@@ -39,41 +50,41 @@ export const useSortingAlgorithm = (
 	const [animationEvents, setAnimationEvents] = useState<SortingEvent[]>([]);
 
 	useEffect(() => {
-		let events: SortingEvent[] = [];
-		let comparisons = 0;
-		let swaps = 0;
+		let result;
 		if (currentAlgorithm === "Bubble Sort") {
-			const result = bubbleSort(initialArray);
-			events = result.events;
-			comparisons = result.comparisons;
-			swaps = result.swaps;
+			result = bubbleSort(initialArray);
 		} else if (currentAlgorithm === "Merge Sort") {
-			const result = mergeSort(initialArray);
-			events = result.events;
-			comparisons = result.comparisons;
-			swaps = result.swaps;
+			result = mergeSort(initialArray);
 		} else if (currentAlgorithm === "Quick Sort") {
-			const result = quickSort(initialArray);
-			events = result.events;
-			comparisons = result.comparisons;
-			swaps = result.swaps;
+			result = quickSort(initialArray);
 		}
-		setAnimationEvents(events);
 
-		setAnimationState((prev) => ({
-			...prev,
-			sorted: -1,
-			totalSteps: events.length,
-			currentStep: 0,
-			isDone: false,
-			stats: { comparisons, swaps },
-		}));
-		setArray([...initialArray]);
+		if (result) {
+			const { events, comparisons, swaps } = result;
+
+			setAnimationEvents(events);
+			setAnimationState((prev) => ({
+				...prev,
+				comparing: [],
+				swapping: [],
+				setting: null,
+				dividing: [],
+				merging: null,
+				partitioning: null,
+				pivotIndex: null,
+				sorted: [],
+				totalSteps: events.length,
+				currentStep: 0,
+				isDone: false,
+				stats: { comparisons, swaps },
+			}));
+			setArray([...initialArray]);
+		}
 	}, [initialArray, currentAlgorithm]);
 
 	const nextStep = () => {
 		if (animationState.currentStep >= animationState.totalSteps) {
-			setAnimationEvents((prev) => ({
+			setAnimationState((prev) => ({
 				...prev,
 				isDone: true,
 				isRunning: false,
@@ -88,45 +99,130 @@ export const useSortingAlgorithm = (
 			...animationState,
 			comparing: [],
 			swapping: [],
+			setting: null,
+			dividing: [],
+			merging: null,
+			partitioning: null,
+			pivotIndex: null,
 			currentStep: animationState.currentStep + 1,
 		};
 
-		if (currentEvent.type === "compare") {
-			newAnimationState.comparing = currentEvent.indices;
-		} else if (currentEvent.type === "swap") {
-			newAnimationState.swapping = currentEvent.indices;
-			const [i, j] = currentEvent.indices;
-			[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-		} else if (currentEvent.type === "sorted") {
-			newAnimationState.sorted = animationState.sorted + 1;
+		if ("type" in currentEvent) {
+			switch (currentEvent.type) {
+				case "compare":
+					newAnimationState.comparing = currentEvent.indices;
+					break;
+				case "swap":
+					newAnimationState.swapping = currentEvent.indices;
+					const [i, j] = currentEvent.indices;
+					[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+					break;
+				case "set":
+					newAnimationState.setting = {
+						index: currentEvent.index,
+						value: currentEvent.value,
+					};
+					newArray[currentEvent.index] = currentEvent.value;
+					break;
+				case "divide":
+					newAnimationState.dividing = currentEvent.indices;
+					break;
+				case "merge":
+					newAnimationState.merging = {
+						leftStart: currentEvent.leftStart,
+						mid: currentEvent.mid,
+						rightEnd: currentEvent.rightEnd,
+					};
+					break;
+				case "partition":
+					newAnimationState.partitioning = {
+						start: currentEvent.start,
+						end: currentEvent.end,
+						pivotIndex: currentEvent.pivotIndex,
+					};
+					break;
+				case "pivot":
+					newAnimationState.pivotIndex = currentEvent.index;
+					break;
+				case "sorted":
+					if ("index" in currentEvent) {
+						newAnimationState.sorted = [currentEvent.index];
+					} else if ("indices" in currentEvent) {
+						newAnimationState.sorted = currentEvent.indices;
+					}
+					break;
+			}
 		}
+
 		setArray(newArray);
 		setAnimationState(newAnimationState);
 	};
 
 	const prevStep = () => {
 		if (animationState.currentStep <= 0) return;
-		const previousEvent = animationEvents[animationState.currentStep - 1];
-		const newArray = [...array];
 
-		const newAnimationState = <AnimationStateProps>{
-			...animationState,
+		// For simplicity in this implementation, we'll reset and replay forward
+		// to the previous step, as undoing complex operations accurately is challenging
+		const targetStep = animationState.currentStep - 1;
+
+		setArray([...originalArray]);
+		setAnimationState((prev) => ({
+			...prev,
 			comparing: [],
 			swapping: [],
-			currentStep: animationState.currentStep - 1,
-		};
+			setting: null,
+			dividing: [],
+			merging: null,
+			partitioning: null,
+			pivotIndex: null,
+			sorted: [],
+			currentStep: 0,
+		}));
 
-		if (previousEvent.type === "swap") {
-			newAnimationState.swapping = previousEvent.indices;
-			const [i, j] = previousEvent.indices;
-			[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-		} else if (previousEvent.type === "compare") {
-			newAnimationState.comparing = [];
-		} else if (previousEvent.type === "sorted") {
-			newAnimationState.sorted = Math.max(0, animationState.sorted - 1);
-		}
-		setArray(newArray);
-		setAnimationState(newAnimationState);
+		setTimeout(() => {
+			let tempArray = [...originalArray];
+			const newState = <AnimationStateProps>{
+				comparing: [],
+				swapping: [],
+				setting: null,
+				dividing: [],
+				merging: null,
+				partitioning: null,
+				pivotIndex: null,
+				sorted: [],
+				currentStep: targetStep,
+				totalSteps: animationState.totalSteps,
+				isRunning: false,
+				isDone: false,
+				stats: animationState.stats,
+			};
+
+			for (let i = 0; i < targetStep; i++) {
+				const event = animationEvents[i];
+
+				if ("type" in event) {
+					if (event.type === "swap" && "indices" in event) {
+						const [a, b] = event.indices;
+						[tempArray[a], tempArray[b]] = [tempArray[b], tempArray[a]];
+					} else if (
+						event.type === "set" &&
+						"index" in event &&
+						"value" in event
+					) {
+						tempArray[event.index] = event.value;
+					} else if (event.type === "sorted") {
+						if ("index" in event) {
+							newState.sorted = [event.index];
+						} else if ("indices" in event) {
+							newState.sorted = event.indices;
+						}
+					}
+				}
+			}
+
+			setArray(tempArray);
+			setAnimationState(newState);
+		}, 0);
 	};
 
 	useEffect(() => {
@@ -144,21 +240,17 @@ export const useSortingAlgorithm = (
 	}, [animationState.isRunning, animationState.currentStep, animationSpeed]);
 
 	const play = () => {
-		setAnimationState((prev) => {
-			return {
-				...prev,
-				isRunning: true,
-			};
-		});
+		setAnimationState((prev) => ({
+			...prev,
+			isRunning: true,
+		}));
 	};
 
 	const pause = () => {
-		setAnimationState((prev) => {
-			return {
-				...prev,
-				isRunning: false,
-			};
-		});
+		setAnimationState((prev) => ({
+			...prev,
+			isRunning: false,
+		}));
 	};
 
 	const reset = () => {
@@ -167,11 +259,15 @@ export const useSortingAlgorithm = (
 			...prev,
 			comparing: [],
 			swapping: [],
-			sorted: 0,
+			setting: null,
+			dividing: [],
+			merging: null,
+			partitioning: null,
+			pivotIndex: null,
+			sorted: [],
 			currentStep: 0,
 			isRunning: false,
 			isDone: false,
-			stats: { comparisons: 0, swaps: 0 },
 		}));
 	};
 
