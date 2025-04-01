@@ -11,7 +11,7 @@ const SideBarControls = () => {
 		setAnimationSpeed,
 	} = useVisualizationStore();
 
-	const { toggleOpen, isOpen } = useSideBarStore();
+	const { toggleOpen} = useSideBarStore();
 	return (
 		<div className="flex items-center m-4 tracking-tight justify-center flex-col gap-4">
 			<h1>SORTING METHOD</h1>
