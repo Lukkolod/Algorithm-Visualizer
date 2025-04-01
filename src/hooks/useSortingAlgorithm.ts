@@ -161,8 +161,7 @@ export const useSortingAlgorithm = (
 	const prevStep = () => {
 		if (animationState.currentStep <= 0) return;
 
-		// For simplicity in this implementation, we'll reset and replay forward
-		// to the previous step, as undoing complex operations accurately is challenging
+		
 		const targetStep = animationState.currentStep - 1;
 
 		setArray([...originalArray]);

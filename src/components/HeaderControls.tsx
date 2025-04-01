@@ -1,11 +1,14 @@
 import { IoOptionsSharp } from "react-icons/io5";
 import { useSideBarStore } from "../stores/sideBarStore";
+import { FaGithub } from "react-icons/fa";
 
 const HeaderControls = () => {
 	const { toggleOpen, isOpen } = useSideBarStore();
 
 	return (
 		<div className="flex items-center h-full pr-6">
+                
+                <a href="https://github.com/Lukkolod/Algorithm-Visualizer/tree/main" target="_blank"><FaGithub size={32} className="cursor-pointer mr-4" /></a>
 			{!isOpen && (
 				<button
 					className="flex items-center gap-2 px-4 py-2 
