@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 export const useCurrentLocation = () => {
 	const location = useLocation();

@@ -14,9 +14,7 @@ const FindingVisualizer = () => {
 	const [obstacles, setObstacles] = useState<Set<string>>(new Set());
 	const [visitedNodes, setVisitedNodes] = useState<Set<string>>(new Set());
 	const [path, setPath] = useState<Node[]>([]);
-	const [currentDragging, setCurrentDragging] = useState<DraggingProps | null>(
-		null
-	);
+	
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [animationPhase, setAnimationPhase] = useState<
 		"search" | "path" | "complete"
@@ -214,7 +212,6 @@ const FindingVisualizer = () => {
 	const handleDragStart = (e: React.DragEvent, type: DraggingProps) => {
 		if (isAnimating || isObstacleMode) return;
 		e.dataTransfer.setData("text/plain", type);
-		setCurrentDragging(type);
 	};
 
 	const handleDragOver = (e: React.DragEvent) => {
@@ -234,7 +231,6 @@ const FindingVisualizer = () => {
 			setGoalPos({ x, y });
 		}
 
-		setCurrentDragging(null);
 	};
 
 	const setRef = (x: number, y: number) => (element: HTMLDivElement | null) => {
