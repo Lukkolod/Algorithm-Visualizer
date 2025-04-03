@@ -1,6 +1,6 @@
 <h1 align="left">🔍 Algorithm Visualizer</h1>
 
-<p align="left">A visual playground for sorting algorithms that brings computer science to life. Watch algorithms work their magic in real-time with interactive controls and beautiful animations. [Algorithm visualizer]([https://www.example.com](https://algorithm-visualizer-nine-zeta.vercel.app/))</p>
+<p align="left">A visual playground for sorting algorithms that brings computer science to life. Watch algorithms work their magic in real-time with interactive controls and beautiful animations. [Algorithm visualizer](https://algorithm-visualizer-nine-zeta.vercel.app/)</p>
 
 <h2 align="left">✨ What it does</h2>
 
