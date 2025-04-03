@@ -8,7 +8,7 @@ import { motion, spring } from "framer-motion";
 type DraggingProps = "start" | "goal";
 
 const FindingVisualizer = () => {
-	const gridSize = 20;
+	const gridSize = 17;
 	const [startPos, setStartPos] = useState({ x: 2, y: 9 });
 	const [goalPos, setGoalPos] = useState({ x: 12, y: 3 });
 	const [obstacles, setObstacles] = useState<Set<string>>(new Set());
