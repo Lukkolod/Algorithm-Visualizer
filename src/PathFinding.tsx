@@ -1,5 +1,4 @@
 import Header from "./components/Header";
-import HeaderAstarControls from "./components/HeaderAstarControls";
 import FindingVisualizer from "./components/PathFindingAlgorithms/FindingVisualizer";
 
 

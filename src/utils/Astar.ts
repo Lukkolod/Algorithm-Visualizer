@@ -6,11 +6,6 @@ interface Node {
 	hScore: number;
 	parent: Node | null;
 }
-interface AstarProps {
-	start: Node;
-	goal: Node;
-	gridSize: number;
-}
 class PriorityQueue {
 	private nodes: Node[];
 	private nodeMap: Map<string, Node>;
@@ -45,7 +40,7 @@ class PriorityQueue {
 	}
 }
 
-const Astar = <AstarProps>(
+const Astar = (
 	start: Node,
 	goal: Node,
 	gridSize: number,
@@ -55,7 +50,7 @@ const Astar = <AstarProps>(
 	const heuristic = (a: Node, b: Node): number => {
 		return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 	};
-	const getMovementCost = (from: Node, to: Node): number => {
+	const getMovementCost = (): number => {
 		let movementCost = 1;
 
 		return movementCost;
@@ -160,7 +155,7 @@ const Astar = <AstarProps>(
 			}
 
 			const tentativeGScore =
-				currentNode.gScore + getMovementCost(currentNode, neighbor);
+				currentNode.gScore + getMovementCost();
 
 			if (
 				!gScoreMap.has(neighborKey) ||
