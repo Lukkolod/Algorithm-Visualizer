@@ -26,7 +26,7 @@ type SortingEvent = BubbleSortEvent | MergeSortEvent | QuickSortEvent;
 export const useSortingAlgorithm = (
 	initialArray: number[],
 	animationSpeed: number,
-	currentAlgorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort"
+	currentAlgorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort" | "A* Search"
 ) => {
 	const [array, setArray] = useState([...initialArray]);
 	const [originalArray] = useState([...initialArray]);

@@ -4,7 +4,7 @@ import { generateArray } from "../utils/generateArray";
 interface VisualizationStore {
 	arraySize: number;
 	array: number[];
-	currentAlgorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort";
+	currentAlgorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort" | "A* Search";
 	animationSpeed: number;
 	isRunning: boolean;
 	setArraySize: (size: number) => void;
@@ -12,7 +12,7 @@ interface VisualizationStore {
 	setAnimationSpeed: (speed: number) => void;
 	toggleRunning: () => void;
 	setCurrentAlgorithm: (
-		algorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort"
+		algorithm: "Bubble Sort" | "Merge Sort" | "Quick Sort" | "A* Search"
 	) => void;
 }
 

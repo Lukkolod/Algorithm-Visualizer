@@ -23,9 +23,9 @@ const SortingVisualizer = () => {
 		setValueToHeight(heightMap);
 	}, [array]);
 
-    useEffect(() => {
-        controls.reset();
-    }, [currentAlgorithm])
+	useEffect(() => {
+		controls.reset();
+	}, [currentAlgorithm]);
 
 	const {
 		array: visualArray,
@@ -40,7 +40,7 @@ const SortingVisualizer = () => {
 					<div
 						className={`border rounded-sm bg-gradient-to-t from-emerald-900 to-emerald-700 md:w-8 sm:w-4 flex items-end justify-center text-xs font-medium transition-all duration-200 ease-in-out
                 ${
-									(animationState.comparing).includes(index)
+									animationState.comparing.includes(index)
 										? "border-yellow-400 shadow-lg shadow-yellow-400/20"
 										: ""
 								}

@@ -1,3 +1,4 @@
+import HeaderAstarControls from "./HeaderAstarControls";
 import HeaderControls from "./HeaderControls";
 import HeaderTitle from "./HeaderTitle";
 
